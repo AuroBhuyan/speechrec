@@ -15,32 +15,32 @@
     <script>
         const searchInput = document.getElementById('searchInput');
         const startSpeechButton = document.getElementById('startSpeechButton');
-
+    
         // Check if the browser supports the Web Speech API
         if ('webkitSpeechRecognition' in window) {
             const recognition = new webkitSpeechRecognition();
-
+    
             // Set properties for the speech recognition
-            recognition.continuous = false;
+            recognition.continuous = true; // Change this to true by Sushant
             recognition.interimResults = false;
             recognition.lang = 'en-US';
-
+    
             // Event handler for when speech recognition starts
             recognition.onstart = () => {
                 startSpeechButton.textContent = 'Listening...';
             };
-
+    
             // Event handler for when speech recognition ends
             recognition.onend = () => {
                 startSpeechButton.textContent = 'Start Speech Recognition';
             };
-
+    
             // Event handler for when speech is recognized
             recognition.onresult = (event) => {
                 const result = event.results[0][0].transcript;
                 searchInput.value = result;
             };
-
+    
             // Event handler for the start button click
             startSpeechButton.addEventListener('click', () => {
                 try {
