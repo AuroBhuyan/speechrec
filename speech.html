@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Speech to Text Search</title>
+</head>
+<body>
+    <h1>Speech to Text Search</h1>
+    
+    <!-- Create a search input field and a button to trigger speech recognition -->
+    <input type="text" id="searchInput" placeholder="Search...">
+    <button id="startSpeechButton">Start Speech Recognition</button>
+
+    <script>
+        const searchInput = document.getElementById('searchInput');
+        const startSpeechButton = document.getElementById('startSpeechButton');
+
+        // Check if the browser supports the Web Speech API
+        if ('webkitSpeechRecognition' in window) {
+            const recognition = new webkitSpeechRecognition();
+
+            // Set properties for the speech recognition
+            recognition.continuous = false;
+            recognition.interimResults = false;
+            recognition.lang = 'en-US';
+
+            // Event handler for when speech recognition starts
+            recognition.onstart = () => {
+                startSpeechButton.textContent = 'Listening...';
+            };
+
+            // Event handler for when speech recognition ends
+            recognition.onend = () => {
+                startSpeechButton.textContent = 'Start Speech Recognition';
+            };
+
+            // Event handler for when speech is recognized
+            recognition.onresult = (event) => {
+                const result = event.results[0][0].transcript;
+                searchInput.value = result;
+            };
+
+            // Event handler for the start button click
+            startSpeechButton.addEventListener('click', () => {
+                try {
+                    recognition.start();
+                } catch (error) {
+                    console.error('Speech recognition error:', error);
+                    alert('Speech recognition error. Please check your microphone and settings.');
+                }
+            });
+        } else {
+            // If the Web Speech API is not supported, disable the button
+            startSpeechButton.disabled = true;
+            startSpeechButton.textContent = 'Speech recognition not supported';
+        }
+    </script>
+</body>
+</html>
